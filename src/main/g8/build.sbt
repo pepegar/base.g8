@@ -4,21 +4,18 @@ lazy val core = project.in(file("."))
       name := "$name$"
     )
 
-val catsV = "$catsV$"
-val kittensV = "$kittensV$"
-val catsEffectV = "$catsEffectV$"
-val mouseV = "$mouseV$"
-val shapelessV = "$shapelessV$"
-val fs2V = "$fs2V$"
-val http4sV = "$http4sV$"
-val circeV = "$circeV$"
-val doobieV = "$doobieV$"
-val pureConfigV = "$pureConfigV$"
-val refinedV = "$refinedV$"
-
-val specs2V = "$specs2V$"
-val disciplineV = "$disciplineV$"
-val scShapelessV = "$scalacheckShapelessV$"
+lazy val V = new {
+  val cats = "$catsV$"
+  val kittens = "$kittensV$"
+  val catsEffect = "$catsEffectV$"
+  val mouse = "$mouseV$"
+  val shapeless = "$shapelessV$"
+  val fs2 = "$fs2V$"
+  val circe = "$circeV$"
+  val droste = "$drosteV$"
+  val specs2 = "$specs2V$"
+  val discipline = "$disciplineV$"
+}
 
 
 lazy val contributors = Seq(
@@ -41,43 +38,26 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.2.4"),
   libraryDependencies ++= Seq(
-    "org.typelevel"               %% "cats-core"                  % catsV,
+    "org.typelevel"               %% "cats-core"                  % V.cats,
 
-    "org.typelevel"               %% "kittens"                    % kittensV,
-    "org.typelevel"               %% "alleycats-core"             % catsV,
-    "org.typelevel"               %% "mouse"                      % mouseV,
+    "org.typelevel"               %% "kittens"                    % V.kittens,
+    "org.typelevel"               %% "alleycats-core"             % V.cats,
+    "org.typelevel"               %% "mouse"                      % V.mouse,
 
-    "org.typelevel"               %% "cats-effect"                % catsEffectV,
+    "org.typelevel"               %% "cats-effect"                % V.catsEffect,
 
-    "com.chuusai"                 %% "shapeless"                  % shapelessV,
+    "com.chuusai"                 %% "shapeless"                  % V.shapeless,
 
-    "co.fs2"                      %% "fs2-core"                   % fs2V,
-    "co.fs2"                      %% "fs2-io"                     % fs2V,
+    "co.fs2"                      %% "fs2-core"                   % V.fs2,
+    "co.fs2"                      %% "fs2-io"                     % V.fs2,
 
-    "org.http4s"                  %% "http4s-dsl"                 % http4sV,
-    "org.http4s"                  %% "http4s-blaze-server"        % http4sV,
-    "org.http4s"                  %% "http4s-blaze-client"        % http4sV,
-    "org.http4s"                  %% "http4s-circe"               % http4sV,
+    "io.circe"                    %% "circe-core"                 % V.circe,
+    "io.circe"                    %% "circe-generic"              % V.circe,
+    "io.circe"                    %% "circe-parser"               % V.circe,
 
-    "io.circe"                    %% "circe-core"                 % circeV,
-    "io.circe"                    %% "circe-generic"              % circeV,
-    "io.circe"                    %% "circe-parser"               % circeV,
-
-    "org.tpolecat"                %% "doobie-core"                % doobieV,
-    "org.tpolecat"                %% "doobie-h2"                  % doobieV,
-    "org.tpolecat"                %% "doobie-hikari"              % doobieV,
-    "org.tpolecat"                %% "doobie-postgres"            % doobieV,
-    "org.tpolecat"                %% "doobie-specs2"              % doobieV       % Test,
-
-    "com.github.pureconfig"       %% "pureconfig"                 % pureConfigV,
-
-    "eu.timepit"                  %% "refined"                    % refinedV,
-    "eu.timepit"                  %% "refined-scalacheck"         % refinedV      % Test,
-
-    "org.specs2"                  %% "specs2-core"                % specs2V       % Test,
-    "org.specs2"                  %% "specs2-scalacheck"          % specs2V       % Test,
-    "org.typelevel"               %% "discipline"                 % disciplineV   % Test,
-    "com.github.alexarchambault"  %% "scalacheck-shapeless_1.13"  % scShapelessV  % Test
+    "org.specs2"                  %% "specs2-core"                % V.specs2       % Test,
+    "org.specs2"                  %% "specs2-scalacheck"          % V.specs2       % Test,
+    "org.typelevel"               %% "discipline"                 % V.discipline   % Test,
   )
 )
 
