@@ -1,7 +1,7 @@
 inThisBuild(List(
   organization := "$organization$",
   homepage := Some(url("https://github.com/$contributorUsername$/$name$")),
-  licenses := List("MIT", url("http://opensource.org/licenses/MIT"))
+  licenses := List(("MIT", url("http://opensource.org/licenses/MIT"))),
   developers := List(
     Developer(
       "$contributorUsername$",
