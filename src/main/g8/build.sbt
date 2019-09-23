@@ -1,3 +1,17 @@
+inThisBuild(List(
+  organization := "$organization$",
+  homepage := Some(url("https://github.com/$contributorUsername$/$name$")),
+  licenses := List("MIT", url("http://opensource.org/licenses/MIT"))
+  developers := List(
+    Developer(
+      "$contributorUsername$",
+      "$contributorName$",
+      "$contributorEmail$",
+      url("$url$")
+    )
+  )
+))
+
 lazy val core = project.in(file("."))
     .settings(commonSettings)
     .settings(
@@ -19,10 +33,6 @@ lazy val V = new {
   val betterMonadicFor = "$betterMonadicForV$"
 }
 
-
-lazy val contributors = Seq(
-  "$contributorUsername$" -> "$contributorName$"
-)
 
 // check for library updates whenever the project is [re]load
 onLoad in Global := { s =>
@@ -82,27 +92,6 @@ lazy val releaseSettings = {
       releaseStepCommand("sonatypeReleaseAll"),
       pushChanges
     ),
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    },
-    credentials ++= (
-      for {
-        username <- Option(System.getenv().get("SONATYPE_USERNAME"))
-        password <- Option(System.getenv().get("SONATYPE_PASSWORD"))
-      } yield
-        Credentials(
-          "Sonatype Nexus Repository Manager",
-          "oss.sonatype.org",
-          username,
-          password
-        )
-    ).toSeq,
-    publishArtifact in Test := false,
-    releasePublishArtifactsAction := PgpKeys.publishSigned.value,
     scmInfo := Some(
       ScmInfo(
         url("https://github.com/$contributorUsername$/$name$"),
@@ -110,22 +99,6 @@ lazy val releaseSettings = {
       )
     ),
     homepage := Some(url("https://github.com/$contributorUsername$/$name$")),
-    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-    publishMavenStyle := true,
-    pomIncludeRepository := { _ =>
-      false
-    },
-    pomExtra := {
-      <developers>
-        {for ((username, name) <- contributors) yield
-        <developer>
-          <id>{username}</id>
-          <name>{name}</name>
-          <url>http://github.com/{username}</url>
-        </developer>
-        }
-      </developers>
-    }
   )
 }
 
