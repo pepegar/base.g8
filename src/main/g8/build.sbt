@@ -15,6 +15,8 @@ lazy val V = new {
   val droste = "$drosteV$"
   val specs2 = "$specs2V$"
   val discipline = "$disciplineV$"
+  val kindProjector = "$kindProjectorV$"
+  val betterMonadicFor = "$betterMonadicForV$"
 }
 
 
@@ -35,8 +37,8 @@ lazy val commonSettings = Seq(
   crossScalaVersions := Seq(scalaVersion.value, "$other_scala_version$"),
   scalafmtOnCompile in ThisBuild := true,
 
-  addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary),
-  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.2.4"),
+  addCompilerPlugin("org.typelevel" % "kind-projector" % V.kindProjector cross CrossVersion.binary),
+  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % V.betterMonadicFor cross CrossVersion.full),
   libraryDependencies ++= Seq(
     "org.typelevel"               %% "cats-core"                  % V.cats,
 
@@ -132,10 +134,10 @@ lazy val mimaSettings = {
 
   def semverBinCompatVersions(major: Int, minor: Int, patch: Int): Set[(Int, Int, Int)] = {
     val majorVersions: List[Int] = List(major)
-    val minorVersions : List[Int] = 
+    val minorVersions : List[Int] =
       if (major >= 1) Range(0, minor).inclusive.toList
       else List(minor)
-    def patchVersions(currentMinVersion: Int): List[Int] = 
+    def patchVersions(currentMinVersion: Int): List[Int] =
       if (minor == 0 && patch == 0) List.empty[Int]
       else if (currentMinVersion != minor) List(0)
       else Range(0, patch - 1).inclusive.toList
@@ -167,7 +169,7 @@ lazy val mimaSettings = {
     mimaFailOnProblem := mimaVersions(version.value).toList.headOption.isDefined,
     mimaPreviousArtifacts := (mimaVersions(version.value) ++ extraVersions)
       .filterNot(excludedVersions.contains(_))
-      .map{v => 
+      .map{v =>
         val moduleN = moduleName.value + "_" + scalaBinaryVersion.value.toString
         organization.value % moduleN % v
       },
