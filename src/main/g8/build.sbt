@@ -9,14 +9,21 @@ inThisBuild(List(
       "$contributorEmail$",
       url("$url$")
     )
-  )
+  ),
+  scalaVersion := "$scalaVersion$"
 ))
+
+lazy val root = project.dependsOn(core, docs).aggregate(core, docs)
 
 lazy val core = project.in(file("."))
     .settings(commonSettings)
     .settings(
       name := "$name$"
     )
+
+lazy val docs = project.in(file("docs"))
+  .dependsOn(core)
+  .enablePlugins(MicrositesPlugin)
 
 lazy val V = new {
   val cats = "$catsV$"
@@ -41,14 +48,11 @@ onLoad in Global := { s =>
 
 // General Settings
 lazy val commonSettings = Seq(
-  organization := "$organization$",
-
-  scalaVersion := "$scala_version$",
   crossScalaVersions := Seq(scalaVersion.value, "$other_scala_version$"),
   scalafmtOnCompile in ThisBuild := true,
 
   addCompilerPlugin("org.typelevel" % "kind-projector" % V.kindProjector cross CrossVersion.binary),
-  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % V.betterMonadicFor cross CrossVersion.full),
+  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % V.betterMonadicFor),
   libraryDependencies ++= Seq(
     "org.typelevel"               %% "cats-core"                  % V.cats,
 
@@ -69,7 +73,7 @@ lazy val commonSettings = Seq(
 
     "org.specs2"                  %% "specs2-core"                % V.specs2       % Test,
     "org.specs2"                  %% "specs2-scalacheck"          % V.specs2       % Test,
-    "org.typelevel"               %% "discipline"                 % V.discipline   % Test,
+    "org.typelevel"               %% "discipline-core"            % V.discipline   % Test,
   )
 )
 
@@ -153,6 +157,20 @@ lazy val mimaSettings = {
     }
   )
 }
+
+lazy val micrositesSettings = Seq(
+    micrositeName := "$name$",
+    micrositeDescription := "super cool project",
+    micrositeBaseUrl := "$name$",
+    micrositeDocumentationUrl := s"https://www.javadoc.io/doc/${organization.value}/$name$_2.13",
+    micrositeGithubOwner := "$contributorUsername$",
+    micrositeGithubRepo := "$name$",
+    micrositeHighlightTheme := "tomorrow",
+    micrositePushSiteWith := GitHub4s,
+    micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
+    micrositeCompilingDocsTool := WithMdoc,
+    mdocIn := tutSourceDirectory.value
+)
 
 lazy val skipOnPublishSettings = Seq(
   skip in publish := true,
