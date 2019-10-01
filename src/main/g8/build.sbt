@@ -162,7 +162,6 @@ lazy val micrositesSettings = Seq(
     micrositeName := "$name$",
     micrositeDescription := "super cool project",
     micrositeBaseUrl := "$name$",
-    micrositeDocumentationUrl := s"https:\/\/www.javadoc.io\/doc\/${organization.value}\/$name$_2.13",
     micrositeGithubOwner := "$contributorUsername$",
     micrositeGithubRepo := "$name$",
     micrositeHighlightTheme := "tomorrow",
